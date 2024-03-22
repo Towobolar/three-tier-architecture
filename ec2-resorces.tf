@@ -25,7 +25,7 @@ resource "aws_autoscaling_group" "three-tier-web-asg" {
   min_size             = 2
   max_size             = 4
   desired_capacity     = 2
-  vpc_zone_identifier  = [aws_subnet.private-subnet-1.id, aws_subnet.public-subnet-2.id]
+  vpc_zone_identifier  = [aws_subnet.public-subnet-1.id, aws_subnet.public-subnet-2.id]
 
   lifecycle {
     create_before_destroy = true
