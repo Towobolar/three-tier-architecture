@@ -18,11 +18,11 @@ resource "aws_lb_target_group" "alb-target-grp" {
   vpc_id      = aws_vpc.three-tier-vpc.id
 }
 
-resource "aws_lb_target_group_attachment" "my-aws-alb1" {
+/*resource "aws_lb_target_group_attachment" "my-aws-alb1" {
   target_group_arn = aws_lb_target_group.alb-target-grp.id
-  target_id        = aws_instance.
+  target_id        = aws_instance
   port             = 80
-}
+}*/
 
 # Create a new ALB Target Group attachment
 resource "aws_autoscaling_attachment" "asg-attachment" {
