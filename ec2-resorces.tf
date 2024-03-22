@@ -21,7 +21,7 @@ resource "aws_launch_configuration" "three-tier-web-asg-lc" {
 
 resource "aws_autoscaling_group" "three-tier-web-asg" {
   name                 = "three-tier-web-asg"
-  launch_configuration = aws_launch_configuration.three-tier-web-asg-lc
+  launch_configuration = aws_launch_configuration.three-tier-web-asg-lc.id
   min_size             = 2
   max_size             = 4
   desired_capacity     = 2
@@ -63,7 +63,7 @@ resource "aws_launch_configuration" "three-tier-app-asg-lc" {
 
 resource "aws_autoscaling_group" "three-tier-app-asg" {
   name                 = "three-tier-app-asg"
-  launch_configuration = aws_launch_configuration.three-tier-app-asg-lc
+  launch_configuration = aws_launch_configuration.three-tier-app-asg-lc.id
   min_size             = 2
   max_size             = 4
   desired_capacity     = 2
