@@ -3,7 +3,7 @@
 ************************************************/
 
 resource "aws_launch_template" "three-tier-web-server-asg-lt" {
-  name   = "web-server-asg"
+  name          = "web-server-asg"
   image_id      = "ami-0b9932f4918a00c4f"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.three-tier-demo-key.id
@@ -39,7 +39,7 @@ resource "aws_key_pair" "three-tier-demo-key" {
 ************************************************/
 
 resource "aws_launch_template" "three-tier-app-server-asg-lt" {
-  name_prefix   = "app-server-asg"
+  name   = "app-server-asg"
   image_id      = "ami-0b9932f4918a00c4f"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.three-tier-demo-key.id
