@@ -8,7 +8,7 @@ resource "aws_launch_configuration" "three-tier-web-asg-lc" {
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.three-tier-demo-key.id
   associate_public_ip_address = true
-  security_groups             = [aws_security_group.web-server-sg]
+  security_groups             = [aws_security_group.web-server-sg.id]
 
   lifecycle {
     create_before_destroy = true
@@ -50,7 +50,7 @@ resource "aws_launch_configuration" "three-tier-app-asg-lc" {
   image_id        = "ami-0b9932f4918a00c4f"
   instance_type   = "t2.micro"
   key_name        = aws_key_pair.three-tier-demo-key.id
-  security_groups = [aws_security_group.app-server-sg]
+  security_groups = [aws_security_group.app-server-sg.id]
 
   lifecycle {
     create_before_destroy = true
