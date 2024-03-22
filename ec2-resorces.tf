@@ -2,26 +2,33 @@
 *    web auto scaling launch configuration        *
 ************************************************/
 
-resource "aws_launch_template" "three-tier-web-server-asg-lt" {
-  name          = "web-server-asg"
-  image_id      = "ami-0b9932f4918a00c4f"
-  instance_type = "t2.micro"
-  key_name      = aws_key_pair.three-tier-demo-key.id
+resource "aws_launch_configuration" "three-tier-web-asg-lc" {
+  name_prefix                 = "three-tier-web-asg-lc"
+  image_id                    = "ami-0b9932f4918a00c4f"
+  instance_type               = "t2.micro"
+  key_name                    = aws_key_pair.three-tier-demo-key.id
+  associate_public_ip_address = true
+  security_groups             = [aws_autoscaling_group.three-tier-web-server-asg.id]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 /***********************************************
 *     web auto scaling group                       *
 ************************************************/
 
-resource "aws_autoscaling_group" "three-tier-web-server-asg" {
-  desired_capacity    = 2
-  max_size            = 4
-  min_size            = 2
-  vpc_zone_identifier = [aws_subnet.public-subnet-1.id, aws_subnet.public-subnet-2.id]
+resource "aws_autoscaling_group" "three-tier-web-asg" {
+  name                 = "three-tier-web-asg"
+  launch_configuration = aws_launch_configuration.three-tier-web-asg-lc
+  min_size             = 2
+  max_size             = 4
+  desired_capacity     = 2
+  vpc_zone_identifier  = [aws_subnet.private-subnet-1.id, aws_subnet.public-subnet-2.id]
 
-  launch_template {
-    id      = aws_launch_template.three-tier-web-server-asg-lt.id
-    version = "$Latest"
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -38,26 +45,32 @@ resource "aws_key_pair" "three-tier-demo-key" {
 *    app auto scaling launch configuration        *
 ************************************************/
 
-resource "aws_launch_template" "three-tier-app-server-asg-lt" {
-  name   = "app-server-asg"
-  image_id      = "ami-0b9932f4918a00c4f"
-  instance_type = "t2.micro"
-  key_name      = aws_key_pair.three-tier-demo-key.id
+resource "aws_launch_configuration" "three-tier-app-asg-lc" {
+  name_prefix     = "three-tier-app-asg-lc"
+  image_id        = "ami-0b9932f4918a00c4f"
+  instance_type   = "t2.micro"
+  key_name        = aws_key_pair.three-tier-demo-key.id
+  security_groups = [aws_autoscaling_group.three-tier-app-server-asg.id]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 /***********************************************
 *     app auto scaling group                       *
 ************************************************/
 
-resource "aws_autoscaling_group" "three-tier-app-server-asg" {
-  desired_capacity    = 2
-  max_size            = 4
-  min_size            = 2
-  vpc_zone_identifier = [aws_subnet.private-subnet-1.id, aws_subnet.private-subnet-2.id]
+resource "aws_autoscaling_group" "three-tier-app-asg" {
+  name                 = "three-tier-app-asg"
+  launch_configuration = aws_launch_configuration.three-tier-app-asg-lc
+  min_size             = 2
+  max_size             = 4
+  desired_capacity     = 2
+  vpc_zone_identifier  = [aws_subnet.private-subnet-1.id, aws_subnet.private-subnet-2.id]
 
-  launch_template {
-    id      = aws_launch_template.three-tier-app-server-asg-lt.id
-    version = "$Latest"
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
