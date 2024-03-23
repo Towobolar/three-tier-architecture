@@ -39,7 +39,7 @@ resource "aws_lb_listener" "lb_lst" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.alb-target-grp-webserver.arn
   }
-}
+} 
 
 /***********************************************
 *  Application load balancer for app server    *
