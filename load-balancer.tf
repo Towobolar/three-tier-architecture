@@ -10,8 +10,8 @@ resource "aws_lb" "webserver-asg-alb" {
   subnets            = [aws_subnet.public-subnet-1.id, aws_subnet.public-subnet-2.id]
 }
 
-resource "aws_lb_target_group" "alb-target-grp-web" {
-  name        = "alb-target-grp"
+resource "aws_lb_target_group" "alb-target-grp-webserver" {
+  name        = "web-alb-target-grp"
   target_type = "instance"
   port        = 80
   protocol    = "HTTP"
@@ -21,7 +21,7 @@ resource "aws_lb_target_group" "alb-target-grp-web" {
 # Create a new ALB Target Group attachment
 resource "aws_autoscaling_attachment" "webserver-asg-attachment" {
   autoscaling_group_name = aws_autoscaling_group.three-tier-web-asg.id
-  lb_target_group_arn    = aws_lb_target_group.alb-target-grp-web.arn
+  lb_target_group_arn    = aws_lb_target_group.alb-target-grp-webserver.arn
 }
 
 
@@ -33,7 +33,7 @@ resource "aws_lb_listener" "lb_lst-webserver" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.alb-target-grp-web.arn
+    target_group_arn = aws_lb_target_group.alb-target-grp-webserver.arn
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_lb" "appserver-asg-alb" {
 }
 
 resource "aws_lb_target_group" "alb-target-grp-appserver" {
-  name        = "alb-target-grp"
+  name        = "app-alb-target-grp"
   target_type = "instance"
   port        = 80
   protocol    = "HTTP"
