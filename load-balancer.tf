@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "alb-target-grp-webserver" {
 # Create a new ALB Target Group attachment
 resource "aws_autoscaling_attachment" "asg-attachment" {
   autoscaling_group_name = aws_autoscaling_group.three-tier-web-asg.id
-  lb_target_group_arn    = aws_lb_target_group.alb-target-grp.arn
+  lb_target_group_arn    = aws_lb_target_group.alb-target-grp-webserver
 }
 
 resource "aws_lb_listener" "lb_lst" {
