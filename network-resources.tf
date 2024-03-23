@@ -143,7 +143,7 @@ resource "aws_eip" "elastic-ip" {
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  instance_id   = null
+  instance_id   = "i-021f7d859753b1531"
   allocation_id = aws_eip.elastic-ip.id
 }
 
