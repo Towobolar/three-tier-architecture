@@ -135,6 +135,7 @@ resource "aws_route_table_association" "public-sn2-2b" {
 
 resource "aws_eip" "elastic-ip" {
   domain = "vpc"
+  
 
   tags = {
     Name = "Nat ip"
