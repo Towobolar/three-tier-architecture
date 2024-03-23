@@ -1,5 +1,5 @@
 /***********************************************
-*       Application load balancer for web asg             *
+*       Application load balancer              *
 ***********************************************/
 
 resource "aws_lb" "webserver-asg-alb" {
@@ -18,15 +18,19 @@ resource "aws_lb_target_group" "alb-target-grp-webserver" {
   vpc_id      = aws_vpc.three-tier-vpc.id
 }
 
+/*resource "aws_lb_target_group_attachment" "my-aws-alb1" {
+  target_group_arn = aws_lb_target_group.alb-target-grp.id
+  target_id        = aws_instance
+  port             = 80
+}*/
+
 # Create a new ALB Target Group attachment
-resource "aws_autoscaling_attachment" "webserver-asg-attachment" {
+resource "aws_autoscaling_attachment" "asg-attachment" {
   autoscaling_group_name = aws_autoscaling_group.three-tier-web-asg.id
-  lb_target_group_arn    = aws_lb_target_group.alb-target-grp-webserver.arn
+  lb_target_group_arn    = aws_lb_target_group.alb-target-grp.arn
 }
 
-
-
-resource "aws_lb_listener" "lb_lst-webserver" {
+resource "aws_lb_listener" "lb_lst" {
   load_balancer_arn = aws_lb.webserver-asg-alb.arn
   port              = "80"
   protocol          = "HTTP"
