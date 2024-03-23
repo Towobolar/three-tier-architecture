@@ -9,7 +9,7 @@ resource "aws_launch_configuration" "three-tier-web-asg-lc" {
   key_name                    = aws_key_pair.three-tier-demo-key.id
   associate_public_ip_address = true
   security_groups             = [aws_security_group.webserver-sg.id]
-  
+
 
   lifecycle {
     create_before_destroy = true

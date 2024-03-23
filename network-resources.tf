@@ -135,11 +135,16 @@ resource "aws_route_table_association" "public-sn2-2b" {
 
 resource "aws_eip" "elastic-ip" {
   domain = "vpc"
-  
+
 
   tags = {
     Name = "Nat ip"
   }
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = null
+  allocation_id = aws_eip.elastic-ip.id
 }
 
 /***********************************************
