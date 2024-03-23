@@ -8,7 +8,7 @@ resource "aws_launch_configuration" "three-tier-web-asg-lc" {
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.three-tier-demo-key.id
   associate_public_ip_address = true
-  security_groups             = [aws_security_group.web-server-sg.id]
+  security_groups             = [aws_security_group.webserver-sg.id]
 
   lifecycle {
     create_before_destroy = true
@@ -50,7 +50,7 @@ resource "aws_launch_configuration" "three-tier-app-asg-lc" {
   image_id        = "ami-0b9932f4918a00c4f"
   instance_type   = "t2.micro"
   key_name        = aws_key_pair.three-tier-demo-key.id
-  security_groups = [aws_security_group.app-server-sg.id]
+  security_groups = [aws_security_group.appserver-sg.id]
 
   lifecycle {
     create_before_destroy = true
@@ -104,6 +104,7 @@ resource "aws_db_instance" "db-instance" {
   skip_final_snapshot    = true
   db_subnet_group_name   = aws_db_subnet_group.database-sg.id
   vpc_security_group_ids = [aws_security_group.db-sg.id]
+  multi_az               = true
 }
 
 /*******************************

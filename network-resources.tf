@@ -90,7 +90,7 @@ resource "aws_subnet" "private-subnet-4" {
 *           internet gateway                   *
 ************************************************/
 
-resource "aws_internet_gateway" "gw" {
+resource "aws_internet_gateway" "internet-gw" {
   vpc_id = aws_vpc.three-tier-vpc.id
 
   tags = {
@@ -107,7 +107,7 @@ resource "aws_route_table" "web-route-table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gw.id
+    gateway_id = aws_internet_gateway.internet-gw.id
   }
 }
 
@@ -129,3 +129,31 @@ resource "aws_route_table_association" "public-sn2-2b" {
   route_table_id = aws_route_table.web-route-table.id
 }
 
+/***********************************************
+*           elastic ip                         *
+************************************************/
+
+resource "aws_eip" "elastic-ip" {
+  domain = "vpc"
+
+  tags = {
+    Name = "Nat ip"
+  }
+}
+
+/***********************************************
+*           Nat Gateway                        *
+************************************************/
+
+resource "aws_nat_gateway" "nat-gw" {
+  allocation_id = aws_eip.elastic-ip.id
+  subnet_id     = aws_subnet.public-subnet-1.id
+
+  tags = {
+    Name = "gw NAT"
+  }
+
+  # To ensure proper ordering, it is recommended to add an explicit dependency
+  # on the Internet Gateway for the VPC.
+  depends_on = [aws_internet_gateway.internet-gw]
+}

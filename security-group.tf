@@ -2,7 +2,7 @@
 *     web server security group                *
 ************************************************/
 
-resource "aws_security_group" "web-server-sg" {
+resource "aws_security_group" "webserver-sg" {
   name        = "web-sg"
   description = "allow inbound ssh and https traffic"
   vpc_id      = aws_vpc.three-tier-vpc.id
@@ -35,7 +35,7 @@ resource "aws_security_group" "web-server-sg" {
 *     app server security group                *
 ***********************************************/
 
-resource "aws_security_group" "app-server-sg" {
+resource "aws_security_group" "appserver-sg" {
   name        = "app-sg"
   description = "allow inbound ssh"
   vpc_id      = aws_vpc.three-tier-vpc.id
@@ -96,9 +96,9 @@ resource "aws_security_group" "db-sg" {
   }
 }
 
-/***************************
-*     bastion host         *
-***************************/
+/***************************************
+*     bastion host Security group       *
+****************************************/
 
 resource "aws_security_group" "bastion-host-sg" {
   name        = "bastion host sg"
