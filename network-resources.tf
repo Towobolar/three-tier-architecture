@@ -134,17 +134,12 @@ resource "aws_route_table_association" "public-sn2-2b" {
 ************************************************/
 
 resource "aws_eip" "elastic-ip" {
-  domain = "vpc"
+  vpc = true 
 
 
   tags = {
-    Name = "Nat ip"
+    Name = "Nat eip"
   }
-}
-
-resource "aws_eip_association" "eip_assoc" {
-  instance_id = aws_autoscaling_group.three-tier-web-asg.id
-  allocation_id = aws_eip.elastic-ip.id
 }
 
 /***********************************************
@@ -156,7 +151,7 @@ resource "aws_nat_gateway" "nat-gw" {
   subnet_id     = aws_subnet.public-subnet-1.id
 
   tags = {
-    Name = "gw NAT"
+    Name = "three-tier-nat-gw"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
