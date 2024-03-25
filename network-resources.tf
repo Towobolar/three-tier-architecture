@@ -104,15 +104,29 @@ resource "aws_internet_gateway" "internet-gw" {
 
 resource "aws_route_table" "web-route-table" {
   vpc_id = aws_vpc.three-tier-vpc.id
+  tags = {
+    Name = "webroute table"
+  }
 
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.internet-gw.id
   }
 }
+resource "aws_route_table" "app-route-table" {
+  vpc_id = aws_vpc.three-tier-vpc.id
+  tags = {
+    Name = "app-route table"
+  }
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.nat-gw.allocation_id
+  }
+}
 
 /***********************************************
-*           route table association            *
+*          Public route table association      *
 ************************************************/
 
 resource "aws_route_table_association" "public-sn1-2a" {
@@ -120,14 +134,34 @@ resource "aws_route_table_association" "public-sn1-2a" {
   route_table_id = aws_route_table.web-route-table.id
 }
 
-/***********************************************
-*           route table association            *
-************************************************/
-
 resource "aws_route_table_association" "public-sn2-2b" {
   subnet_id      = aws_subnet.public-subnet-2.id
   route_table_id = aws_route_table.web-route-table.id
 }
+
+/***********************************************
+*          private route table association     *
+************************************************/
+resource "aws_route_table_association" "private-sn1-2a-rt" {
+  subnet_id      = aws_subnet.private-subnet-1.id
+  route_table_id = aws_route_table.app-route-table.id
+}
+
+resource "aws_route_table_association" "private-sn2-2b-rt" {
+  subnet_id      = aws_subnet.private-subnet-2.id
+  route_table_id = aws_route_table.app-route-table.id
+}
+
+resource "aws_route_table_association" "private-sn3-2a-rt" {
+  subnet_id      = aws_subnet.private-subnet-3.id
+  route_table_id = aws_route_table.app-route-table.id
+}
+
+resource "aws_route_table_association" "private-sn4-2a-rt" {
+  subnet_id      = aws_subnet.private-subnet-4
+  route_table_id = aws_route_table.app-route-table.id
+}
+
 
 /***********************************************
 *           elastic ip                         *
