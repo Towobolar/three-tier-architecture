@@ -65,7 +65,7 @@ resource "aws_security_group" "appserver-sg" {
 }
 
 /**************************************************
-*    Create a Security group for Database server  *
+*       Security group for Database server        *
 **************************************************/
 
 resource "aws_security_group" "db-sg" {
