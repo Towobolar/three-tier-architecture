@@ -158,7 +158,7 @@ resource "aws_route_table_association" "private-sn3-2a-rt" {
 }
 
 resource "aws_route_table_association" "private-sn4-2a-rt" {
-  subnet_id      = aws_subnet.private-subnet-4
+  subnet_id      = aws_subnet.private-subnet-4.id
   route_table_id = aws_route_table.app-route-table.id
 }
 
