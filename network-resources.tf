@@ -121,7 +121,7 @@ resource "aws_route_table" "app-route-table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat-gw.allocation_id
+    gateway_id = aws_nat_gateway.nat-gw.id
   }
 }
 
